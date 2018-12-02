@@ -1,0 +1,43 @@
+# See https://help.github.com/ignore-files/ for more about ignoring files.
+
+###
+# Secure
+#
+.env
+
+###
+# Logs
+#
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+
+###
+# Manifest
+#
+# yarn.lock -> Travis need this to run yarn install
+package-lock.json
+
+###
+# IDE
+#
+.vscode
+.idea
+
+###
+# node
+#
+.npm
+.npmrc
+node_modules
+
+###
+# misc
+#
+temp
+coverage
+
+.terraform
