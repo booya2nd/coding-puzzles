@@ -1,30 +1,21 @@
-function levensthein(a, b){
-  var tmp;
-  if (a.length === 0) { return b.length; }
-  if (b.length === 0) { return a.length; }
-  if (a.length > b.length) { tmp = a; a = b; b = tmp; }
-
-  var i, j, res, alen = a.length, blen = b.length, row = Array(alen);
-  for (i = 0; i <= alen; i++) { row[i] = i; }
-
-  for (i = 1; i <= blen; i++) {
-    res = i;
-    for (j = 1; j <= alen; j++) {
-      tmp = row[j - 1];
-      row[j - 1] = res;
-      res = b[i - 1] === a[j - 1] ? tmp : Math.min(tmp + 1, Math.min(res + 1, row[j] + 1));
-    }
+function hasOneCharDifference(a, b){
+  if (a === b) return false;
+  for(let i=0, l=a.length, count=0; i<l; i++) {
+    count += a[i] !== b[i];
+    if (count > 1) return false;
   }
-  return res;
+  return true;
 }
 
 const list = document.body.textContent.split('\n');
-loop:for(let i=0, l=list.length, match=[]; i<l; i++) {
+let match = [];
+loop:for(let i=0, l=list.length; i<l; i++) {
   for(let j=i; j<l; j++){
-    if (levensthein(list[i], list[j]) === 1) {
+    if (hasOneCharDifference(list[i], list[j])) {
       match = [list[i], list[j]];
       break loop;
     }
   }
 }
+
 [...match[0]].reduce((result, chr, index) => result + (chr === match[1][index] ? chr : ''), ""); // cnjxoritzhvbosyewrmqhgkul
