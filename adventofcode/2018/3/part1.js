@@ -7,10 +7,10 @@ const overlaps = createMatrix(1e3, 1e3);
 function draw(rectData, surface) {
   let {left, top, width, height} = rectData;
   left*=1; top*=1; width*=1; height*=1;
-  for (let x=0; x<width; x++){
-    for (let y=0; y<height; y++){
-      if (++surface[left+x][top+y] > 1) {
-        overlaps[left+x][top+y] = 1;
+  for (let y=0; y<height; y++){
+    for (let x=0; x<width; x++){
+      if (++surface[top+y][left+x] > 1) {
+        overlaps[top+y][left+x] = 1;
       }
     }
   }
@@ -23,4 +23,4 @@ document.body.textContent.trim().split('\n')
   draw(rectData, surface);
 });
 // analyze rects
-overlaps.reduce((sum, cols) => cols.reduce((xsum, cell) => xsum + cell, sum), 0); // 111485
+overlaps.reduce((sum, row) => row.reduce((xsum, cell) => xsum + cell, sum), 0); // 111485
