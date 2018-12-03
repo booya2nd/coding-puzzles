@@ -1,7 +1,7 @@
-Advent of Code[About][Events][Shop][Settings][Log Out]booya2nd 3*
- {'year':2018}[Calendar][AoC++][Sponsors][Leaderboard][Stats]
+Advent of Code[About][Events][Shop][Settings][Log Out]booya2nd 4*
+   int y=2018;[Calendar][AoC++][Sponsors][Leaderboard][Stats]
 Our sponsors help make Advent of Code possible:
-Formlabs - 3D printing with lasers. Software, hardware, and more. Pew pew!
+WeAreDevelopers - Use "AOC-25", save EUR 25 and join 10^4 devs on June 6-7 at the WeAreDevelopers World Congress in Berlin ticket.get(now)
 
 --- Day 3: No Matter How You Slice It ---
 The Elves managed to locate the chimney-squeeze prototype fabric for Santa's suit (thanks to someone who helpfully wrote its box IDs on the wall of the warehouse in the middle of the night). Unfortunately, anomalies are still affecting them - nobody can even agree on how to cut the fabric.
@@ -44,9 +44,20 @@ The four square inches marked with X are claimed by both 1 and 2. (Claim 3, whil
 
 If the Elves all proceed with their own plans, none of them will have enough fabric. How many square inches of fabric are within two or more claims?
 
-To begin, get your puzzle input.
+Your puzzle answer was 111485.
 
-Answer: 
- 
+The first half of this puzzle is complete! It provides one gold star: *
+
+--- Part Two ---
+Amidst the chaos, you notice that exactly one claim doesn't overlap by even a single square inch of fabric with any other claim. If you can somehow draw attention to it, maybe the Elves will be able to make Santa's suit after all!
+
+For example, in the claims above, only claim 3 is intact after all claims are made.
+
+What is the ID of the only claim that doesn't overlap?
+
+Although it hasn't changed, you can still get your puzzle input.
+
+Answer:
+
 
 You can also [Share] this puzzle.
