@@ -1,8 +1,7 @@
-Advent of Code[About][Events][Shop][Settings][Log Out]booya2nd 5*
-       λy.2018[Calendar][AoC++][Sponsors][Leaderboard][Stats]
+Advent of Code[About][Events][Shop][Settings][Log Out]booya2nd 6*
+  0.0.0.0:2018[Calendar][AoC++][Sponsors][Leaderboard][Stats]
 Our sponsors help make Advent of Code possible:
-SmartyStreets - Global address validation made by developers, for developers
-
+Formlabs - 3D printing with lasers. Software, hardware, and more. Pew pew!
 --- Day 4: Repose Record ---
 You've sneaked into another supply closet - this time, it's across from the prototype suit manufacturing lab. You need to sneak inside and fix the issues with the suit, but there's a guard stationed outside the lab, so this is as close as you can safely get.
 
@@ -53,7 +52,18 @@ While this example listed the entries in chronological order, your entries are i
 
 What is the ID of the guard you chose multiplied by the minute you chose? (In the above example, the answer would be 10 * 24 = 240.)
 
-To begin, get your puzzle input.
+Your puzzle answer was 38813.
+
+The first half of this puzzle is complete! It provides one gold star: *
+
+--- Part Two ---
+Strategy 2: Of all guards, which guard is most frequently asleep on the same minute?
+
+In the example above, Guard #99 spent minute 45 asleep more than any other guard or minute - three times in total. (In all other cases, any guard spent any minute asleep at most twice.)
+
+What is the ID of the guard you chose multiplied by the minute you chose? (In the above example, the answer would be 99 * 45 = 4455.)
+
+Although it hasn't changed, you can still get your puzzle input.
 
 Answer:
 
