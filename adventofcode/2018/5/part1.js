@@ -45,6 +45,7 @@ const main = (example) => {
   } while (changed);
 
   console.log('result: ', processed);
+  console.log('len:', processed.length)
 }
 
 main('aA');
