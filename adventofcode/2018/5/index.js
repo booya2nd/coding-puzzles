@@ -5,28 +5,34 @@ const process = (input) => {
   let processed = '';
   let changed = false;
 
-  for (let i = 0; i < input.length - 1; i++) {
-    const curItem = input[i];
-    const nextItem = input[i+1];
+  for (let i = 0; i < input.length; i++) {
+    if (i == (input.length -1)) {
+      processed +=  input[i];
+    } else {
+      const curItem = input[i];
+      const nextItem = input[i+1];
 
-    if (curItem.toLowerCase() === nextItem.toLowerCase()) {
-      if (curItem !== nextItem) {
-        changed = true;
-        i += 1;
-      }
-      else {
+      if (curItem.toLowerCase() === nextItem.toLowerCase()) {
+        if (curItem !== nextItem) {
+          changed = true;
+          i += 1;
+        }
+        else {
+          processed += curItem;
+        }
+      } else {
         processed += curItem;
       }
-    } else {
-      processed += curItem;
     }
   }
 
   return { changed, processed };
 }
 
-const main = () => {
-  const input = fs.readFileSync(path.join(__dirname, 'input.txt'), 'utf8');
+const main = (example) => {
+  let input;
+  if (!example) input = fs.readFileSync(path.join(__dirname, 'input.txt'), 'utf8');
+  else input = example;
 
   let changed = false;
   let processed = input;
@@ -38,7 +44,12 @@ const main = () => {
 
   } while (changed);
 
-  console.log(processed);
+  console.log('result: ', processed);
 }
 
+main('aA');
+main('abBA');
+main('abAB');
+main('aabAAB');
+main('dabAcCaCBAcCcaDA');
 main();
