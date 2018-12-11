@@ -12,14 +12,11 @@ var input = useTestInput ? debug : document.body.textContent;
 
 // create index;
 // NOTE: contains a lot of nonsense - will se what I can throw away after part2
-console.time('index');
 var Ω = Infinity;
-var index = {x:[], y:[], xMin:Ω, xMax:-Ω, yMin:Ω, yMax:-Ω, distances:new Map, isFinite:new Map};
+var index = {x:[], y:[], xMin:Ω, xMax:-Ω, yMin:Ω, yMax:-Ω, isFinite:new Map};
 var points = input.trim().split('\n').map((line, i) => {
   const [x,y] = line.split(', ').map(n => n*1);
   const point = {area:1, x,y,name:String.fromCharCode(65+i%26 + (32)*(i/26|0))};
-  (index.x[x] || (index.x[x] = new Map)).set(point, point);
-  (index.y[y] || (index.y[y] = new Map)).set(point, point);
   index[[x,y]] = point;
   x < index.xMin && (index.xMin = x);
   x > index.xMax && (index.xMax = x);
@@ -27,25 +24,7 @@ var points = input.trim().split('\n').map((line, i) => {
   y > index.yMax && (index.yMax = y);
   return point;
 });
-// add distances to index
-// read Distance of PointA and PointF like `index.distances.get(points[0]).get(points[5])`
-for (let i=0,l=points.length; i<l; i++){
-  const { distances } = index;
 
-  const p1 = points[i];
-  distances.has(p1) || distances.set(p1, new Map);
-  const map1 = distances.get(p1);
-
-  for (let j=i+1; j<l; j++){
-    const p2 = points[j];
-    distances.has(p2) || distances.set(p2, new Map);
-    const map2 = distances.get(p2);
-    const distance = getDistance(p1,p2);
-    map1.set(p2, distance);
-    map2.set(p1, distance);
-  }
-}
-console.timeEnd('index');
 function getDistance(p1,p2){
   return Math.abs(p1.x - p2.x) + Math.abs(p1.y - p2.y)
 }
