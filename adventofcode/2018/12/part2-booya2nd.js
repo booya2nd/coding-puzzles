@@ -1,5 +1,6 @@
 (() => {
-  const [initialState, rulesInput] = document.body.textContent.trim().match(/:(.*)\n([\s\S]+)/).slice(1).map(s => s.trim());
+  const input = document.body.textContent.trim();
+  const [initialState, rulesInput] = input.match(/:(.*)\n([\s\S]+)/).slice(1).map(s => s.trim());
   const offs = '.'.repeat(10);
   const initial = offs + initialState;
 
@@ -23,26 +24,28 @@
     return output;
   }
 
-  function renderGenerations(n){
-    let output = initial;
-    while(n-->0) output = renderGeneration(output);
-    return output;
-  }
-
   function count(output){
     let sum = 0;
     output.replace(/#/g, (x,i) => sum += i-offs.length);
     return sum;
   }
 
-  // render && analyze higher numbers:
-  return [
-    count(renderGenerations(20)),
-    count(renderGenerations(50)),
-    count(renderGenerations(100)),
-    count(renderGenerations(110)),
-    count(renderGenerations(120)),
-    count(renderGenerations(200)),
-  ]
-})(); // [3248, 4658, 8000, 8800, 9600, 16000] ~> 100 gens = 8000
-// 50e9 / 100 * 80 = 40000000000
+  function calculateGeneration(n){
+    let diffs=[], results = [], isRecurring, output=initial, i=0;
+    while (!isRecurring && i++<n) {
+      output = renderGeneration(output);
+      results.unshift(count(output));
+      diffs.unshift(Math.abs(results[0] - (results[1]||0)));
+      // two consecutively equal `diffs` means `recurrence` (at least high probability)
+      isRecurring = diffs[0] === diffs[1];
+    }
+    return isRecurring
+      ? results[0] + (n - i) * diffs[0]
+      : results[0];
+  }
+
+  return {
+    20: calculateGeneration(20),
+    50e9: calculateGeneration(50e9),
+  };
+})();
