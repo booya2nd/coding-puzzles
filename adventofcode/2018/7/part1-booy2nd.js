@@ -13,7 +13,7 @@
 
   let current;
   while(current = next()){
-    resolved[current.name] = current;
+    resolved[current.name]=current;
     delete list[current.name];
   }
 
