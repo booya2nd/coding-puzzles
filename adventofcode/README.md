@@ -12,7 +12,7 @@
         │   └── 01
         │       ├── README.txt    // riddle description (copy&paste)
         │       └── booya2nd      // your github name
-        │           ├── input.txt // riddle input
+        │           ├── input.txt // riddle input (different for almost everyone)
         │           ├── part1.js  // part1 solution (there is always a second part)
         │           └── part2.js  // part2 solution
 
