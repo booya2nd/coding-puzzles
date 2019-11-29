@@ -22,7 +22,7 @@
     - add README.txt containing the riddle's page content (selectall, copy, paste 👍)
     - place __your__ `input.txt` (its different for almost everyone) 
 - __afterwards__ add you solutions
-- Use whatever coding environment
+- Use whatever coding environment / language
 - Dont write to other contributer's folders
 
 
