@@ -17,7 +17,7 @@
         │           └── part2.js  // part2 solution
 
     ```
-- IF STRUCUTRE NOT EXISTS (add ASAP):
+- IF STRUCTURE NOT EXISTS (add ASAP):
     - add folder adventofcode/${year}/${day}/
     - add README.txt containing the riddle's page content (selectall, copy, paste 👍)
     - place __your__ `input.txt` (its different for almost everyone) 
