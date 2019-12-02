@@ -14,5 +14,5 @@ state[1]=12;state[2]=2;
     i = op(i, arg1, arg2, stor);
   }
   return state[0];
-})(state);
+})(state); // 3166704
 
