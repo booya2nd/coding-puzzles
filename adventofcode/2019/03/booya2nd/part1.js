@@ -9,7 +9,7 @@ U7,R6,D4,L4`;
 const sample2 = `R75,D30,R83,U83,L12,D49,R71,U7,L72
 U62,R66,U55,R34,D71,R55,D58,R83`;
 
-const source = sample1;
+const source = input;
 const data = source.split('\n').map(line=>line.split(','));
 const DIRECTIONS = { R:[0,+1], L:[0,-1], D:[1,+1], U:[1,-1] };
 
@@ -73,9 +73,14 @@ data.forEach((lineInstructions, i) => {
     return p2;
   }, ORIGIN);
 });
-
 console.table(canvas);
+
+/*** FIND CLOSEST INTERSECTION ***/
 console.log(intersections);
+// calc manhatten distances
+const distances = intersections.map(point => Math.abs(ORIGIN[0]-point[0]) + Math.abs(ORIGIN[1]-point[1]));
+const [closestIntersection] = distances.sort((a,b) => a-b);
+console.log(closestIntersection); // 225
 // IDEAS:
 // - we will need to "draw"; crossing can happen anytime
 // - use 2d-array to store/draw
