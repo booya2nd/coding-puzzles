@@ -73,10 +73,10 @@ data.forEach((lineInstructions, i) => {
     return p2;
   }, ORIGIN);
 });
-console.table(canvas);
+// console.table(canvas);
 
 /*** FIND CLOSEST INTERSECTION ***/
-console.log(intersections);
+// console.log(intersections);
 // calc manhatten distances
 const distances = intersections.map(point => Math.abs(ORIGIN[0]-point[0]) + Math.abs(ORIGIN[1]-point[1]));
 const [closestIntersection] = distances.sort((a,b) => a-b);
