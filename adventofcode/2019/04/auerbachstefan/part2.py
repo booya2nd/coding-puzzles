@@ -4,7 +4,7 @@ def go2(a,b):
     while i <= b:
         s = str(i)
         if sum([s[i]>s[i+1] for i in range(len(s)-1)])==0:
-            if (s[0]==s[1] and s[1]!=s[2]) or                ( s[0] != s[1] and s[1]==s[2] and s[2] != s[3]) or                (s[1] != s[2] and s[2] == s[3] and s[3] != s[4]) or                (s[2] != s[3] and s[3] == s[4] and s[4] != s[5]) or                  (s[3]!=s[4] and s[4]==s[5]):
+            if 2 in [len(x) for x in (''.join([s[j] if s[j]==s[j+1] else s[j]+',' for j in range(len(s)-1)])+s[-1]).split(',')]:
                 c=c+1
         i=i+1
     return c
