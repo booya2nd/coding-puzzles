@@ -1,0 +1,35 @@
+import os
+os.chdir('C:\\Users\\Stefan\\PycharmProjects\\aoc\\05\\auerbachstefan')
+puzzle_input = open('input.txt', 'r').read()
+input=1
+
+#puzzle_input='3,0,4,0,99'
+
+prog = puzzle_input.split(',')
+prog = [int(p) for p in prog]
+
+pos=0
+
+while prog[pos]!=99:
+    instr = str(prog[pos])
+    opcode = int(instr[-2:])
+    #print('pos ', pos, 'instr ' ,instr, 'opcode', opcode )
+    mode1 = '1' if instr[-3:-2]=='1' else '0'
+    mode2 = '1' if instr[-4:-3]=='1' else '0'
+    mode3 = '1' if instr[-5:-4]=='1' else '0'
+    c1 = prog[pos+1] if mode1=='0' else pos+1
+    c2 = prog[pos + 2] if mode2 == '0' else pos + 2
+    c3 = prog[pos + 3] if mode3 == '0' else pos + 3
+    if opcode==1:
+        prog[c3] = prog[c1]+prog[c2]
+        pos = pos + 4
+    if opcode==2:
+        prog[c3] = prog[c1]*prog[c2]
+        pos = pos + 4
+    if opcode == 3:
+        prog[c1] = input
+        pos=pos+2
+    if opcode == 4:
+        print(prog[c1])
+        pos = pos + 2
+
