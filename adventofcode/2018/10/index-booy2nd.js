@@ -79,8 +79,9 @@
     }
   }
   const sortedCandidates = Object.entries(candidates).sort((a,b) => b[1].enclosed.length - a[1].enclosed.length);
-  renderCandidate(sortedCandidates[0])
-})(document.body.textContent);
+  console.log('three candidates (sorted by probability of having a clear image)');
+  sortedCandidates.slice(0,3).forEach(renderCandidate);
+})(require('fs').readFileSync('input.txt', 'utf8'));
 
 // former visual approach:
 // see https://codepen.io/Booya/pen/XoXaEr?editors=1111
