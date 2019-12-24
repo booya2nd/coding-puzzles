@@ -1,122 +1,83 @@
-Advent of Code[About][Events][Shop][Settings][Log Out]Stefan Auerbach 30*
-      /^2019$/[Calendar][AoC++][Sponsors][Leaderboard][Stats]
+Advent of Code[About][Events][Shop][Settings][Log Out]Stefan Auerbach 38*
+          2019[Calendar][AoC++][Sponsors][Leaderboard][Stats]
 Our sponsors help make Advent of Code possible:
-Codethink Ltd. - Codethink is a software services company, expert in the use of Open Source technologies for systems software engineering.
---- Day 15: Oxygen System ---
-Out here in deep space, many things can go wrong. Fortunately, many of those things have indicator lights. Unfortunately, one of those lights is lit: the oxygen system for part of the ship has failed!
+TNG - The Nerd Group. Solving hard IT problems all year round.
+--- Day 19: Tractor Beam ---
+Unsure of the state of Santa's ship, you borrowed the tractor beam technology from Triton. Time to test it out.
 
-According to the readouts, the oxygen system must have failed days ago after a rupture in oxygen tank two; that section of the ship was automatically sealed once oxygen levels went dangerously low. A single remotely-operated repair droid is your only option for fixing the oxygen system.
+When you're safely away from anything else, you activate the tractor beam, but nothing happens. It's hard to tell whether it's working if there's nothing to use it on. Fortunately, your ship's drone system can be configured to deploy a drone to specific coordinates and then check whether it's being pulled. There's even an Intcode program (your puzzle input) that gives you access to the drone system.
 
-The Elves' care package included an Intcode program (your puzzle input) that you can use to remotely control the repair droid. By running that program, you can direct the repair droid to the oxygen system and fix the problem.
+The program uses two input instructions to request the X and Y position to which the drone should be deployed. Negative numbers are invalid and will confuse the drone; all numbers should be zero or positive.
 
-The remote control program executes the following steps in a loop forever:
+Then, the program will output whether the drone is stationary (0) or being pulled by something (1). For example, the coordinate X=0, Y=0 is directly in front of the tractor beam emitter, so the drone control program will always report 1 at that location.
 
-Accept a movement command via an input instruction.
-Send the movement command to the repair droid.
-Wait for the repair droid to finish the movement operation.
-Report on the status of the repair droid via an output instruction.
-Only four movement commands are understood: north (1), south (2), west (3), and east (4). Any other command is invalid. The movements differ in direction, but not in distance: in a long enough east-west hallway, a series of commands like 4,4,4,4,3,3,3,3 would leave the repair droid back where it started.
+To better understand the tractor beam, it is important to get a good picture of the beam itself. For example, suppose you scan the 10x10 grid of points closest to the emitter:
 
-The repair droid can reply with any of the following status codes:
+       X
+  0->      9
+ 0#.........
+ |.#........
+ v..##......
+  ...###....
+  ....###...
+Y .....####.
+  ......####
+  ......####
+  .......###
+ 9........##
+In this example, the number of points affected by the tractor beam in the 10x10 area closest to the emitter is 27.
 
-0: The repair droid hit a wall. Its position has not changed.
-1: The repair droid has moved one step in the requested direction.
-2: The repair droid has moved one step in the requested direction; its new position is the location of the oxygen system.
-You don't know anything about the area around the repair droid, but you can figure it out by watching the status codes.
-
-For example, we can draw the area using D for the droid, # for walls, . for locations the droid can traverse, and empty space for unexplored locations. Then, the initial state looks like this:
-
-
-
-   D
-
-
-To make the droid go north, send it 1. If it replies with 0, you know that location is a wall and that the droid didn't move:
-
-
-   #
-   D
-
-
-To move east, send 4; a reply of 1 means the movement was successful:
-
-
-   #
-   .D
-
-
-Then, perhaps attempts to move north (1), south (2), and east (4) are all met with replies of 0:
-
-
-   ##
-   .D#
-    #
-
-Now, you know the repair droid is in a dead end. Backtrack with 3 (which you already know will get a reply of 1 because you already know that location is open):
-
-
-   ##
-   D.#
-    #
-
-Then, perhaps west (3) gets a reply of 0, south (2) gets a reply of 1, south again (2) gets a reply of 0, and then west (3) gets a reply of 2:
-
-
-   ##
-  #..#
-  D.#
-   #
-Now, because of the reply of 2, you know you've found the oxygen system! In this example, it was only 2 moves away from the repair droid's starting position.
-
-What is the fewest number of movement commands required to move the repair droid from its starting position to the location of the oxygen system?
+However, you'll need to scan a larger area to understand the shape of the beam. How many points are affected by the tractor beam in the 50x50 area closest to the emitter? (For each of X and Y, this will be 0 through 49.)
 
 Your puzzle answer was 234.
 
 --- Part Two ---
-You quickly repair the oxygen system; oxygen gradually fills the area.
+You aren't sure how large Santa's ship is. You aren't even sure if you'll need to use this thing on Santa's ship, but it doesn't hurt to be prepared. You figure Santa's ship might fit in a 100x100 square.
 
-Oxygen starts in the location containing the repaired oxygen system. It takes one minute for oxygen to spread to all open locations that are adjacent to a location that already contains oxygen. Diagonal locations are not adjacent.
+The beam gets wider as it travels away from the emitter; you'll need to be a minimum distance away to fit a square of that size into the beam fully. (Don't rotate the square; it should be aligned to the same axes as the drone grid.)
 
-In the example above, suppose you've used the droid to explore the area fully and have the following map (where locations that currently contain oxygen are marked O):
+For example, suppose you have the following tractor beam readings:
 
- ##
-#..##
-#.#..#
-#.O.#
- ###
-Initially, the only location which contains oxygen is the location of the repaired oxygen system. However, after one minute, the oxygen spreads to all open (.) locations that are adjacent to a location containing oxygen:
+#.......................................
+.#......................................
+..##....................................
+...###..................................
+....###.................................
+.....####...............................
+......#####.............................
+......######............................
+.......#######..........................
+........########........................
+.........#########......................
+..........#########.....................
+...........##########...................
+...........############.................
+............############................
+.............#############..............
+..............##############............
+...............###############..........
+................###############.........
+................#################.......
+.................########OOOOOOOOOO.....
+..................#######OOOOOOOOOO#....
+...................######OOOOOOOOOO###..
+....................#####OOOOOOOOOO#####
+.....................####OOOOOOOOOO#####
+.....................####OOOOOOOOOO#####
+......................###OOOOOOOOOO#####
+.......................##OOOOOOOOOO#####
+........................#OOOOOOOOOO#####
+.........................OOOOOOOOOO#####
+..........................##############
+..........................##############
+...........................#############
+............................############
+.............................###########
+In this example, the 10x10 square closest to the emitter that fits entirely within the tractor beam has been marked O. Within it, the point closest to the emitter (the only highlighted O) is at X=25, Y=20.
 
- ##
-#..##
-#.#..#
-#OOO#
- ###
-After a total of two minutes, the map looks like this:
+Find the 100x100 square closest to the emitter that fits entirely within the tractor beam; within that square, find the point closest to the emitter. What value do you get if you take that point's X coordinate, multiply it by 10000, then add the point's Y coordinate? (In the example above, this would be 250020.)
 
- ##
-#..##
-#O#O.#
-#OOO#
- ###
-After a total of three minutes:
-
- ##
-#O.##
-#O#OO#
-#OOO#
- ###
-And finally, the whole region is full of oxygen after a total of four minutes:
-
- ##
-#OO##
-#O#OO#
-#OOO#
- ###
-So, in this example, all locations contain oxygen after 4 minutes.
-
-Use the repair droid to get a complete map of the area. How many minutes will it take to fill with oxygen?
-
-Your puzzle answer was 292.
+Your puzzle answer was 9290812.
 
 Both parts of this puzzle are complete! They provide two gold stars: **
 
