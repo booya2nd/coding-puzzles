@@ -1,7 +1,7 @@
-Advent of Code[About][Events][Shop][Settings][Log Out]Stefan Auerbach 38*
-   0x0000|2019[Calendar][AoC++][Sponsors][Leaderboard][Stats]
+Advent of Code[About][Events][Shop][Settings][Log Out]Stefan Auerbach 47*
+          2019[Calendar][AoC++][Sponsors][Leaderboard][Stats]
 Our sponsors help make Advent of Code possible:
-Educative.io - Gain in-demand tech skills, at the speed you want. Text-based courses with live coding environments help you learn without the fluff.
+Ximedes - Help us write elegant, secure, and performant software that enables payments worldwide. We're hiring in the Netherlands and Serbia!
 --- Day 20: Donut Maze ---
 You notice a strange pattern on the surface of Pluto and land nearby to get a closer look. Upon closer inspection, you realize you've come across one of the famous space-warping mazes of the long-lost Pluto civilization!
 
@@ -78,8 +78,6 @@ Here, AA has no direct path to ZZ, but it does connect to AS and CP. By passing 
 In your maze, how many steps does it take to get from the open tile marked AA to the open tile marked ZZ?
 
 Your puzzle answer was 684.
-
-The first half of this puzzle is complete! It provides one gold star: *
 
 --- Part Two ---
 Strangely, the exit isn't open when you reach it. Then, you remember: the ancient Plutonians were famous for building recursive spaces.
@@ -204,9 +202,12 @@ This path takes a total of 396 steps to move from AA at the outermost layer to Z
 
 In your maze, when accounting for recursion, how many steps does it take to get from the open tile marked AA to the open tile marked ZZ, both at the outermost layer?
 
-Although it hasn't changed, you can still get your puzzle input.
+Your puzzle answer was 7758.
 
-Answer:
+Both parts of this puzzle are complete! They provide two gold stars: **
 
+At this point, you should return to your Advent calendar and try another puzzle.
+
+If you still want to see it, you can get your puzzle input.
 
 You can also [Share] this puzzle.

@@ -26,28 +26,28 @@ for x,y in corr_grid:
         if (x+1,y) in grid and grid[(x+1,y)]=='.' :
             key=grid[(x-1,y)]+grid[(x,y)]
             if (x-2,y) not in grid: key=key+'o'
-            else: key=key+'u'
+            else: key=key+'i'
             grid[(x+1,y)]=key
             grid[(x-1,y)]=' '
             grid[(x, y)] = ' '
         if  (x-1,y) in grid and grid[(x-1,y)]=='.' :
             key=grid[(x,y)]+grid[(x+1,y)]
             if (x+2,y) not in grid: key=key+'o'
-            else: key=key+'u'
+            else: key=key+'i'
             grid[(x-1,y)]=key
             grid[(x+1,y)]=' '
             grid[(x, y)] = ' '
         if (x,y-1) in grid and grid[(x,y-1)]=='.' :
             key=grid[(x,y)]+grid[(x,y+1)]
             if (x,y+2) not in grid: key=key+'o'
-            else: key=key+'u'
+            else: key=key+'i'
             grid[(x,y-1)]=key
             grid[(x,y+1)]=' '
             grid[(x, y)] = ' '
         if  (x,y+1) in grid and grid[(x,y+1)]=='.':
             key=grid[(x,y-1)]+grid[(x,y)]
             if (x,y-2) not in grid: key=key+'o'
-            else: key=key+'u'
+            else: key=key+'i'
             grid[(x,y+1)]=key
             grid[(x,y-1)]=' '
             grid[(x, y)] = ' '
@@ -112,7 +112,7 @@ for g in [g for g in grid if grid[g] not in '.# ']:
 #add warp edges
 for g in [grid[g] for g in grid if grid[g] not in '.# ' and not 'o' in grid[g]]:
     n=g[0:2]
-    edges=add_edge(n+'u', n+'o', 1, edges)
+    edges=add_edge(n+'i', n+'o', 1, edges)
 
 
 def h(n1,n2):
@@ -131,10 +131,12 @@ def astar(s,g):
     openSet=[s]
     cameFrom={}
 
-    gScore = {grid[g]:float('inf') for g in grid if grid[g] not in '#. '}
+    gScore={}
+    gScore = {grid[g]+'_'+str(k):float('inf') for g in grid if grid[g] not in '#. ' for k in range(500)}
     gScore[s] = 0
 
-    fScore = {grid[g]:float('inf') for g in grid if grid[g] not in '#. '}
+    fScore={}
+    fScore = {grid[g]+'_'+str(k):float('inf') for g in grid if grid[g] not in '#. ' for k in range(500)}
     fScore[s] = 0 #h(stuff[s], stuff[g])
 
     while openSet:
@@ -145,14 +147,35 @@ def astar(s,g):
             return reconstruct_path(cameFrom, current)
 
         openSet.remove(current)
-        for edge in [e for e in edges if current in e]:
-            nb=edge.replace(current,'').replace('-','')
+        current_node = current.split('_')[0]
+        current_level = current.split('_')[1]
+        available_edges = [e for e in edges if current_node in e]
+        print('level',current_level)
+        if current_level == '0':
+            available_edges=[e for e in available_edges if 'i' in e.replace(current_node,'') or 'ZZ' in e or current_node.replace('i','o') in e]
+        if current_level == '0' and 'o' in current_node:
+            available_edges=[e for e in available_edges if e.count(current_node[0:2])<2]
+        if current_level != '0':
+            available_edges=[e for e in available_edges if 'AA' not in e and 'ZZ' not in e]
+        #if 'o' in current_node:
+        #    available_edges=[e for e in available_edges if 'i' in e.replace(current_node,'') or current_node.replace('o','i') in e]
+        #elif 'i' in current_node:
+        #    available_edges = [e for e in available_edges if 'o' in e.replace(current_node,'') or current_node.replace('i','o') in e]
+        print(available_edges)
+        for edge in available_edges:
+            nb=edge.replace(current_node,'').replace('-','')
+            if edge.count(current_node[0:2])==2:
+                if current_node[2]=='i':
+                    nb_level = str(int(current_level) + 1)
+                else:
+                    nb_level = str(int(current_level) - 1)
+            else: nb_level=current_level
             tentative_gScore = gScore[current]+edges[edge]
-            if tentative_gScore < gScore[nb]:
-                cameFrom[nb]=current
-                gScore[nb]=tentative_gScore
-                fScore[nb]=gScore[nb]+0#h(stuff[nb],stuff[g])
-                if nb not in openSet:
-                    openSet.append(nb)
+            if tentative_gScore < gScore[nb+'_'+nb_level]:
+                cameFrom[nb+'_'+nb_level]=current
+                gScore[nb+'_'+nb_level]=tentative_gScore
+                fScore[nb+'_'+nb_level]=gScore[nb+'_'+nb_level]+0#h(stuff[nb],stuff[g])
+                if nb+'_'+nb_level not in openSet:
+                    openSet.append(nb+'_'+nb_level)
 
-res = astar('AAo','ZZo')
+res = astar('AAo_0','ZZo_0')
