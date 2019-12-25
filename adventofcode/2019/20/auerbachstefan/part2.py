@@ -157,10 +157,6 @@ def astar(s,g):
             available_edges=[e for e in available_edges if e.count(current_node[0:2])<2]
         if current_level != '0':
             available_edges=[e for e in available_edges if 'AA' not in e and 'ZZ' not in e]
-        #if 'o' in current_node:
-        #    available_edges=[e for e in available_edges if 'i' in e.replace(current_node,'') or current_node.replace('o','i') in e]
-        #elif 'i' in current_node:
-        #    available_edges = [e for e in available_edges if 'o' in e.replace(current_node,'') or current_node.replace('i','o') in e]
         print(available_edges)
         for edge in available_edges:
             nb=edge.replace(current_node,'').replace('-','')
