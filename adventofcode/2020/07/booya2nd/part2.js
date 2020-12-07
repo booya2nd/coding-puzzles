@@ -21,30 +21,17 @@ input.forEach((line, i) => {
 });
 
 /**************** eval ****************/
-function getNestedChildrenCount(name, _result = []) {
-  TYPES[name].forEach(({ children }) => {
-    let _carry = [];
-    if (children.length) _result.push(_carry);
-    children.forEach((child) => {
-      _carry.push(child.count);
-      getNestedChildrenCount(child.name, _carry);
-    });
-  });
-  return _result;
+function getNestedChildrenCount(name) {
+  return TYPES[name].reduce((totalCount, { children }) => {
+    const subSum = children.reduce((sumChildren, child) => {
+      const deepChildCount = getNestedChildrenCount(child.name);
+      return sumChildren + child.count + child.count * deepChildCount
+    }, 0);
+    return totalCount + subSum;
+  }, 0);
 }
 
-// 🙈🙈🙈🙈🙈🙈🙈🙈🙈🙈🙈🙈🙈🙈 so dirty!!
-function convertNestedCountToArithExpression(nestedCountArray) {
-  return JSON.stringify(nestedCountArray)
-  .replace(/\[/g,'(')
-  .replace(/\]/g,')')
-  .replace(/(\d),\(/g,'$1+$1*(')
-  .replace(/,(\d+)/g,'+$1')
-}
-
-const nestedChildrenCount = getNestedChildrenCount('shiny gold');
-console.log(eval( // 🤣🤣🤣🤣🤣
-  convertNestedCountToArithExpression(nestedChildrenCount)
-));
-
+console.log(
+  getNestedChildrenCount('shiny gold')
+)
 
