@@ -11,8 +11,8 @@ function getAdjacentOcc(state, x, y) {
   return checks.reduce((acc, [yi,xi]) => {
     let i=0;
     while(++i) {
-      const v = state[y+yi*i]?.[x+xi*i]; acc.push(v)
-      if (!v || v !== '.') return acc;
+      const v = state[y+yi*i]?.[x+xi*i];
+      if (!v || v !== '.') return acc.push(v), acc;
     }
   }, []).filter(v => v === '#')
 }

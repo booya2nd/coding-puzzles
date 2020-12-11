@@ -2,11 +2,16 @@ const input = require('fs').readFileSync('input.txt', 'utf8').trim().split('\n')
 
 let state = input.map(line => [...line]);
 function getAdjacentOcc(state, x, y) {
-  return [
-    state[y-1]?.[x-1], state[y-1]?.[x], state[y-1]?.[x+1],
-    state[y]?.[x-1], state[y]?.[x+1],
-    state[y+1]?.[x-1], state[y+1]?.[x], state[y+1]?.[x+1]
- ].filter(v => v === '#')
+  const checks = [
+    [-1,-1], [-1,0], [-1,1],
+    [0,-1], [0,1],
+    [1,-1], [1,0], [1,1],
+  ]
+
+  return checks.reduce((acc, [yi,xi]) => {
+    const v = state[y+yi]?.[x+xi];
+    return acc.push(v), acc;
+  }, []).filter(v => v === '#')
 }
 
 function gen(state) {
