@@ -1,25 +1,22 @@
-const input = require('fs').readFileSync('input.txt', 'utf8').trim();
-const chunks = input.replace(/(mask = )(.*)/g,'$1"$2"').split('\n');
+const input = require('fs').readFileSync('input.txt', 'utf8').trim().split(',')
 
-let mask = ''; const mem = new Proxy({}, {
-  set(stor, i, v){
-    const addr = [...(i*1).toString(2).padStart(36, '0')], X = [];
-    mask.replace(/1|X/g, (flag, i) => {
-      flag === 'X' && X.push(i)
-      addr[i] = flag;
-    });
+const MAX_TURNS = 30000000, nums = {}; let recent; input.forEach(add);
+function add(num, turn){
+  const arr = (nums[num] ||= new Array(2));
+  arr[1] = arr[0]; arr[0] = turn+1;
+  recent = num;
+}
 
-    // generate adresses, store X pos -> count of Xs as binary, count 0000...nnnn and replace X with 0/1
-    const count = 2**X.length;
-    [...Array(count)].forEach((_,i) => {
-      let newAddr = [...addr], iBin = i.toString(2).padStart(X.length, '0');
-      [...iBin].forEach((bit, pos) => newAddr[X[pos]] = bit);
-      newAddr = parseInt(newAddr.join(''), 2);
-      stor[newAddr] = v;
-    });
-  }
-});
+// ❗❗❗❗❗❗ will run for 7m 17s 988 straight!
+console.time();
+for(let turn=input.length; turn<MAX_TURNS; turn++) {
+  const r = nums[recent];
+  const t0 = r[0];
+  const t1 = r[1];
+  const v = t1 ? t0-t1: 0;
+  add(v, turn)
+}
+console.timeEnd();
 
-chunks.forEach(str => eval(str));
-console.log(Object.values(mem).reduce((a,b) => a+b))
 
+console.log(recent);
