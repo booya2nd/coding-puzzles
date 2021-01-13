@@ -1,7 +1,7 @@
-Advent of Code[About][Events][Shop][Settings][Log Out]booya2nd 39*
-  {:year 2020}[Calendar][AoC++][Sponsors][Leaderboard][Stats]
+Advent of Code[About][Events][Shop][Settings][Log Out]booya2nd 40*
+        //2020[Calendar][AoC++][Sponsors][Leaderboard][Stats]
 Our sponsors help make Advent of Code possible:
-tretton37 - Means 1337 in Swedish. What you see is who we are!
+TwilioQuest - Learn to code and lead your intrepid crew on a mission to save The Cloud in TwilioQuest, a PC role-playing game inspired by classics of the 16-bit era. Free forever, and available now for Windows, Mac, and Linux.
 --- Day 24: Lobby Layout ---
 Your raft makes it to the tropical island; it turns out that the small crab was an excellent navigator. You make your way to the resort.
 
@@ -45,8 +45,6 @@ Go through the renovation crew's list and determine which tiles they need to fli
 
 Your puzzle answer was 282.
 
-The first half of this puzzle is complete! It provides one gold star: *
-
 --- Part Two ---
 The tile floor in the lobby is meant to be a living art exhibit. Every day, the tiles are all flipped according to the following rules:
 
@@ -82,9 +80,12 @@ After executing this process a total of 100 times, there would be 2208 black til
 
 How many tiles will be black after 100 days?
 
-Answer:
+Your puzzle answer was 3445.
 
+Both parts of this puzzle are complete! They provide two gold stars: **
 
-Although it hasn't changed, you can still get your puzzle input.
+At this point, you should return to your Advent calendar and try another puzzle.
+
+If you still want to see it, you can get your puzzle input.
 
 You can also [Share] this puzzle.
