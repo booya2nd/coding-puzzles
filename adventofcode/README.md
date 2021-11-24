@@ -2,6 +2,7 @@
 
 - 2018: https://adventofcode.com/2018/about
 - 2019: https://adventofcode.com/2019/about
+- 2020: https://adventofcode.com/2020/about
 
 ## Code of Conduct
 - Folder structure:
