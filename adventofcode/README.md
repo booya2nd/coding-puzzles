@@ -3,6 +3,8 @@
 - 2018: https://adventofcode.com/2018/about
 - 2019: https://adventofcode.com/2019/about
 - 2020: https://adventofcode.com/2020/about
+- 2021: https://adventofcode.com/2021/about
+- 2022: https://adventofcode.com/2022/about
 
 ## Code of Conduct
 - Folder structure:
@@ -10,12 +12,15 @@
     └── adventofcode
         ├── 2018
         ├── 2019
-        │   └── 01
-        │       ├── README.txt    // riddle description (copy&paste)
-        │       └── booya2nd      // your github name
-        │           ├── input.txt // riddle input (different for almost everyone)
-        │           ├── part1.js  // part1 solution (there is always a second part)
-        │           └── part2.js  // part2 solution
+        ├── 2020
+        ├── 2021
+        ├── 2022
+        │   └── 01
+        │       ├── README.txt    // riddle description (copy&paste)
+        │       └── booya2nd      // your github name
+        │           ├── input.txt // riddle input (different for almost everyone)
+        │           ├── part1.js  // part1 solution (there is always a second part)
+        │           └── part2.js  // part2 solution
 
     ```
 - IF STRUCTURE NOT EXISTS (add ASAP):
