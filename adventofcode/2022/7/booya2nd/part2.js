@@ -42,10 +42,13 @@ while(state.lines.length) {
     COMMANDS[cmd](args);
 }
 
-const MAX_DIR_SIZE = 1e5;
-console.log(sum(
-    state.tree['/']
-        .filter(n => n.isDir && n.total < MAX_DIR_SIZE)
-        .map(n => n.total)
-));
+const MAX_DISK_SPACE = 70e6;
+const REQ_DISK_SPACE = 30e6;
+const freeUpSpace = Math.abs(MAX_DISK_SPACE - REQ_DISK_SPACE - state.tree['/'].total);
 
+console.log(
+    state.tree['/']
+        .filter(n => n.isDir && n.total >= freeUpSpace)
+        .sort((a,b) => a.total - b.total)
+        .at(0).total
+);
