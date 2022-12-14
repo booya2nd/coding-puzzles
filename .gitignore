@@ -19,6 +19,7 @@ lerna-debug.log*
 # Manifest
 #
 # yarn.lock -> Travis need this to run yarn install
+package.json
 package-lock.json
 
 ###
