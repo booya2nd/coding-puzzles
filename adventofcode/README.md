@@ -13,8 +13,8 @@
         ├── 2018
         ├── 2019
         ├── 2020
-        ├── 2021
-        ├── 2022
+        ├── ...
+        ├── ...
         │   └── 01
         │       ├── README.txt    // riddle description (copy&paste)
         │       └── booya2nd      // your github name
