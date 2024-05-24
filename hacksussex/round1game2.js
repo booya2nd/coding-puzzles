@@ -10,5 +10,5 @@ function hasAllNumbers(arr) {
     return true;
 }
 
-const r = hasAllNumbers([[1,2,3,4],[2,3,1],[2,1,3]]); // invalid
+const r = hasAllNumbers([[1,2,3,4],[2,3,1],[2,1,3]]); // not perfect
 console.log( r);
