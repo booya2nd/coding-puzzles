@@ -1,21 +1,20 @@
 use itertools::{izip, Itertools};
 
 fn part1(a: &[u32], b: &[u32]) -> u32 {
-    izip!(a.iter().sorted(), b.iter().sorted()).fold(0, |acc, (a, b)| acc + a.abs_diff(*b))
+    izip!(a.iter().sorted(), b.iter().sorted()).fold(0, |s, (a, b)| s + a.abs_diff(*b))
 }
 
 fn part2(a: &[u32], b: &[u32]) -> u32 {
-    let counts = b.iter().counts();
+    let cnt = b.iter().counts();
     a.iter()
-        .map(|num| counts.get(num).copied().unwrap_or(0) as u32 * num)
-        .sum()
+        .fold(0, |s, n| s + *cnt.get(n).unwrap_or(&0) as u32 * n)
 }
 
 fn parse(input: &str) -> (Vec<u32>, Vec<u32>) {
     input
         .lines()
         .filter_map(|l| l.split_once("   "))
-        .map(|(a, b)| (a.parse::<u32>().unwrap(), b.parse::<u32>().unwrap()))
+        .filter_map(|(a, b)| a.parse::<u32>().ok().zip(b.parse::<u32>().ok()))
         .multiunzip()
 }
 
