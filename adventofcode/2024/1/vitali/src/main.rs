@@ -1,13 +1,12 @@
 use itertools::{izip, Itertools};
 
-fn part1(a: &[u32], b: &[u32]) -> u32 {
-    izip!(a.iter().sorted(), b.iter().sorted()).fold(0, |s, (a, b)| s + a.abs_diff(*b))
-}
+fn main() -> anyhow::Result<()> {
+    let (a, b) = parse(&std::fs::read_to_string("input.txt")?);
 
-fn part2(a: &[u32], b: &[u32]) -> u32 {
-    let cnt = b.iter().counts();
-    a.iter()
-        .fold(0, |s, n| s + *cnt.get(n).unwrap_or(&0) as u32 * n)
+    println!("Part #1: {}", part1(&a, &b));
+    println!("Part #2: {}", part2(&a, &b));
+
+    Ok(())
 }
 
 fn parse(input: &str) -> (Vec<u32>, Vec<u32>) {
@@ -18,13 +17,14 @@ fn parse(input: &str) -> (Vec<u32>, Vec<u32>) {
         .multiunzip()
 }
 
-fn main() -> anyhow::Result<()> {
-    let (a, b) = parse(&std::fs::read_to_string("input.txt")?);
+fn part1(a: &[u32], b: &[u32]) -> u32 {
+    izip!(a.iter().sorted(), b.iter().sorted()).fold(0, |s, (a, b)| s + a.abs_diff(*b))
+}
 
-    println!("Part #1: {}", part1(&a, &b));
-    println!("Part #2: {}", part2(&a, &b));
-
-    Ok(())
+fn part2(a: &[u32], b: &[u32]) -> u32 {
+    let cnt = b.iter().counts();
+    a.iter()
+        .fold(0, |s, n| s + *cnt.get(n).unwrap_or(&0) as u32 * n)
 }
 
 #[cfg(test)]
