@@ -42,4 +42,4 @@ temp
 coverage
 
 .terraform
-target
+**/vitali/target/
