@@ -1,7 +1,3 @@
-Advent of Code[About][Events][Shop][Settings][Log Out]booya2nd 1*
-   sub y{2024}[Calendar][AoC++][Sponsors][Leaderboard][Stats]
-Our sponsors help make Advent of Code possible:
-Architus - Join us to build cool tech (and help elves) in Lithuania!
 --- Day 1: Historian Hysteria ---
 The Chief Historian is always present for the big Christmas sleigh launch, but nobody has seen him in months! Last anyone heard, he was visiting locations that are historically significant to the North Pole; a group of Senior Historians has asked you to accompany them as they check the places they think he was most likely to visit.
 
@@ -41,10 +37,6 @@ To find the total distance between the left list and the right list, add up the 
 
 Your actual left and right lists contain many location IDs. What is the total distance between your lists?
 
-Your puzzle answer was 2367773.
-
-The first half of this puzzle is complete! It provides one gold star: *
-
 --- Part Two ---
 Your analysis only confirmed what everyone feared: the two lists of location IDs are indeed very different.
 
@@ -73,10 +65,3 @@ The last number, 3, appears in the right list three times; the similarity score 
 So, for these example lists, the similarity score at the end of this process is 31 (9 + 4 + 0 + 0 + 9 + 9).
 
 Once again consider your left and right lists. What is their similarity score?
-
-Answer:
-
-
-Although it hasn't changed, you can still get your puzzle input.
-
-You can also [Share] this puzzle.
