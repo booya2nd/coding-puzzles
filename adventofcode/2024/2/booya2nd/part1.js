@@ -1,15 +1,9 @@
 const text = require('fs').readFileSync('input.txt', 'utf8').trim();
 const input = text.split('\n');
 
-let result = input
-    .map(l=>l.split(' ').map(n=>+n))
-    .filter(n=>{
-        let dec=true,inc=true,d=true;
-        n.every((v,i)=> !n[i+1]||(
-            dec&&=v>n[i+1],inc&&=v<n[i+1],d&&=Math.abs(v-n[i+1])<=3,
-            dec||inc||d
-        ));
-        return d&&(dec||inc);
-    }).length;
-
-console.log(result);
+const result = input.filter(l => {
+    const n = l.split(' ').map(n => +n);
+    const x = n.slice(0,-1).map((v,i,_,x) => [x=n[i+1]-v,+(x>0),Math.abs(x)]);
+    return x.every(([_,s,d]) => s===x[0][1] && (d>0 && d<4));
+});
+console.log(result.length)
