@@ -1,7 +1,7 @@
-Advent of Code[About][Events][Shop][Settings][Log Out]booya2nd 2*
-   var y=2024;[Calendar][AoC++][Sponsors][Leaderboard][Stats]
+Advent of Code[About][Events][Shop][Settings][Log Out]booya2nd 3*
+  0.0.0.0:2024[Calendar][AoC++][Sponsors][Leaderboard][Stats]
 Our sponsors help make Advent of Code possible:
-Ximedes - FinTech & FareTech Software Professionals.
+Gearset - Customer & product focused - we avoid bureaucracy and have a bias towards shipping software. We're hiring - if you're like us, get in touch
 --- Day 2: Red-Nosed Reports ---
 Fortunately, the first location The Historians want to search isn't a long walk from the Chief Historian's office.
 
@@ -35,9 +35,32 @@ So, in this example, 2 reports are safe.
 
 Analyze the unusual data from the engineers. How many reports are safe?
 
-To begin, get your puzzle input.
+Your puzzle answer was 559.
+
+The first half of this puzzle is complete! It provides one gold star: *
+
+--- Part Two ---
+The engineers are surprised by the low number of safe reports until they realize they forgot to tell you about the Problem Dampener.
+
+The Problem Dampener is a reactor-mounted module that lets the reactor safety systems tolerate a single bad level in what would otherwise be a safe report. It's like the bad level never happened!
+
+Now, the same rules apply as before, except if removing a single level from an unsafe report would make it safe, the report instead counts as safe.
+
+More of the above example's reports are now safe:
+
+7 6 4 2 1: Safe without removing any level.
+1 2 7 8 9: Unsafe regardless of which level is removed.
+9 7 6 2 1: Unsafe regardless of which level is removed.
+1 3 2 4 5: Safe by removing the second level, 3.
+8 6 4 4 1: Safe by removing the third level, 4.
+1 3 6 7 9: Safe without removing any level.
+Thanks to the Problem Dampener, 4 reports are actually safe!
+
+Update your analysis by handling situations where the Problem Dampener can remove a single level from unsafe reports. How many reports are now safe?
 
 Answer:
 
+
+Although it hasn't changed, you can still get your puzzle input.
 
 You can also [Share] this puzzle.
