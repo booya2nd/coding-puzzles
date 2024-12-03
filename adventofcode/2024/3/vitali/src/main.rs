@@ -33,18 +33,12 @@ fn parse_mul(i: &str) -> IResult<&str, Op> {
     )(i)
 }
 
-fn parse_dont(i: &str) -> IResult<&str, Op> {
-    let (i, _) = tag("don't()")(i)?;
-    Ok((i, Op::Dont))
-}
-
-fn parse_do(i: &str) -> IResult<&str, Op> {
-    let (i, _) = tag("do()")(i)?;
-    Ok((i, Op::Do))
-}
-
 fn parse_op(i: &str) -> IResult<&str, Op> {
-    alt((parse_mul, parse_do, parse_dont))(i)
+    alt((
+        parse_mul,
+        map(tag("do()"), |_| Op::Do),
+        map(tag("don't()"), |_| Op::Dont),
+    ))(i)
 }
 
 fn parse(input: &str) -> Vec<Op> {
