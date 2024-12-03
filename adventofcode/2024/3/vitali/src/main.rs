@@ -4,7 +4,8 @@ use nom::{
     branch::alt,
     bytes::complete::tag,
     character::complete::{self, digit1},
-    combinator::map_res,
+    combinator::{map, map_res},
+    multi::many0,
     sequence::{delimited, separated_pair},
     IResult,
 };
@@ -14,6 +15,7 @@ enum Op {
     Mul(i32, i32),
     Dont,
     Do,
+    None,
 }
 
 fn parse_int(input: &str) -> IResult<&str, i32> {
@@ -45,21 +47,17 @@ fn parse_op(i: &str) -> IResult<&str, Op> {
     alt((parse_mul, parse_do, parse_dont))(i)
 }
 
-fn parse(i: &str) -> Vec<Op> {
-    let mut i = i;
-    let mut results = Vec::new();
+fn parse(input: &str) -> Vec<Op> {
+    let (_, ops) = many0(map(
+        alt((parse_op, map(complete::anychar, |_| Op::None))),
+        |op| match op {
+            Op::None => None,
+            _ => Some(op),
+        },
+    ))(input)
+    .expect("Failed to parse input");
 
-    while !i.is_empty() {
-        let Ok(result) = parse_op(i) else {
-            i = &i[1..];
-            continue;
-        };
-
-        i = result.0;
-        results.push(result.1);
-    }
-
-    results
+    ops.into_iter().flatten().collect()
 }
 
 fn part1(ops: &[Op]) -> i32 {
