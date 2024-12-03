@@ -3,7 +3,7 @@ use std::str::FromStr;
 use nom::{
     branch::alt,
     bytes::complete::tag,
-    character::complete::{self, digit1},
+    character::complete::{anychar, digit1},
     combinator::{map, map_res},
     multi::many0,
     sequence::{delimited, separated_pair},
@@ -25,10 +25,9 @@ fn parse_int(input: &str) -> IResult<&str, i32> {
 fn parse_mul(i: &str) -> IResult<&str, Op> {
     delimited(
         tag("mul("),
-        map_res(
-            separated_pair(parse_int, complete::char(','), parse_int),
-            |(a, b)| Ok::<_, ()>(Op::Mul(a, b)),
-        ),
+        map_res(separated_pair(parse_int, tag(","), parse_int), |(a, b)| {
+            Ok::<_, ()>(Op::Mul(a, b))
+        }),
         tag(")"),
     )(i)
 }
@@ -41,17 +40,17 @@ fn parse_op(i: &str) -> IResult<&str, Op> {
     ))(i)
 }
 
-fn parse(input: &str) -> Vec<Op> {
+fn parse(input: &str) -> anyhow::Result<Vec<Op>> {
     let (_, ops) = many0(map(
-        alt((parse_op, map(complete::anychar, |_| Op::None))),
+        alt((parse_op, map(anychar, |_| Op::None))),
         |op| match op {
             Op::None => None,
             _ => Some(op),
         },
     ))(input)
-    .expect("Failed to parse input");
+    .map_err(|err| anyhow::anyhow!("{err}"))?;
 
-    ops.into_iter().flatten().collect()
+    Ok(ops.into_iter().flatten().collect())
 }
 
 fn part1(ops: &[Op]) -> i32 {
@@ -64,25 +63,18 @@ fn part1(ops: &[Op]) -> i32 {
 }
 
 fn part2(ops: &[Op]) -> i32 {
-    let mut result = 0;
-    let mut enabled = true;
-
-    for op in ops {
-        match op {
-            Op::Mul(a, b) if enabled => {
-                result += a * b;
-            }
-            Op::Dont => enabled = false,
-            Op::Do => enabled = true,
-            _ => {}
-        }
-    }
-
-    result
+    ops.iter()
+        .fold((true, 0), |(enabled, result), op| match op {
+            Op::Mul(a, b) if enabled => (enabled, result + a * b),
+            Op::Dont => (false, result),
+            Op::Do => (true, result),
+            _ => (enabled, result),
+        })
+        .1
 }
 
 fn main() -> anyhow::Result<()> {
-    let data = parse(&std::fs::read_to_string("input.txt")?);
+    let data = parse(&std::fs::read_to_string("input.txt")?)?;
 
     println!("Part #1: {}", part1(&data));
     println!("Part #2: {}", part2(&data));
@@ -98,8 +90,8 @@ mod tests {
         r#"xmul(2,4)&mul[3,7]!^don't()_mul(5,5)+mul(32,64](mul(11,8)undo()?mul(8,5))"#;
 
     #[test]
-    fn test_parse() {
-        let result = parse(INPUT);
+    fn test_parse() -> anyhow::Result<()> {
+        let result = parse(INPUT)?;
         assert_eq!(
             result,
             vec![
@@ -111,5 +103,19 @@ mod tests {
                 Op::Mul(8, 5)
             ]
         );
+
+        Ok(())
+    }
+
+    #[test]
+    fn test_part1() {
+        let data = parse(INPUT).unwrap();
+        assert_eq!(part1(&data), 2 * 4 + 5 * 5 + 11 * 8 + 8 * 5);
+    }
+
+    #[test]
+    fn test_part2() {
+        let data = parse(INPUT).unwrap();
+        assert_eq!(part2(&data), 48);
     }
 }
