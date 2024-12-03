@@ -100,9 +100,7 @@ fn main() -> anyhow::Result<()> {
 
 #[cfg(test)]
 mod tests {
-    use std::error;
-
-    use crate::parse;
+    use super::*;
 
     const INPUT: &str =
         r#"xmul(2,4)&mul[3,7]!^don't()_mul(5,5)+mul(32,64](mul(11,8)undo()?mul(8,5))"#;
@@ -110,8 +108,16 @@ mod tests {
     #[test]
     fn test_parse() {
         let result = parse(INPUT);
-
-        println!("{:?}", result);
-        assert_eq!(result, vec![]);
+        assert_eq!(
+            result,
+            vec![
+                Op::Mul(2, 4),
+                Op::Dont,
+                Op::Mul(5, 5),
+                Op::Mul(11, 8),
+                Op::Do,
+                Op::Mul(8, 5)
+            ]
+        );
     }
 }
