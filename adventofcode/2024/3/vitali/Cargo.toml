@@ -1,8 +1,10 @@
 [package]
-name = "aoc2024-day02"
+name = "aoc2024-day03"
 version = "0.1.0"
 edition = "2021"
+
 
 [dependencies]
 anyhow = "1.0.93"
 itertools = "0.13.0"
+nom = "7.1.3"

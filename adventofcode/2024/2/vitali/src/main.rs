@@ -1,18 +1,18 @@
 use itertools::Itertools;
 
 fn is_safe(nums: &[i32], skip: Option<usize>) -> bool {
-    let len = nums.len();
+    let skip = skip.unwrap_or(nums.len());
+
     nums.iter()
-        .take(skip.unwrap_or(len))
-        .chain(nums.iter().skip(skip.unwrap_or(len) + 1))
+        .enumerate()
+        .filter(|&(i, _)| i != skip)
         .tuple_windows()
-        .map(|(a, b)| {
-            let diff = a.abs_diff(*b);
-            (diff > 0 && diff < 4, a > b)
+        .map(|(a, b)| a.1 - b.1)
+        .try_fold(0, |curr, x| match (x.abs(), x.signum()) {
+            (1..=3, sign) if curr == sign || curr == 0 => Ok(sign),
+            _ => Err(()),
         })
-        .all_equal_value()
-        .map(|(result, _)| result)
-        .unwrap_or_default()
+        .map_or(false, |x| x != 0)
 }
 
 fn parse(input: &str) -> Vec<Vec<i32>> {
@@ -21,7 +21,7 @@ fn parse(input: &str) -> Vec<Vec<i32>> {
         .map(|l| {
             l.split_whitespace()
                 .filter_map(|n| n.parse().ok())
-                .collect_vec()
+                .collect()
         })
         .collect()
 }
