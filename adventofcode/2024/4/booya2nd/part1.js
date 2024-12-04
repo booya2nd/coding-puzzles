@@ -10,7 +10,7 @@ for (let i=0; i<text.length; i++) {
     text[i]+text[i+w-1]+text[i+w*2-2]+text[i+w*3-3],
   ];
 
-  count += x.filter(s => +/XMAS|SAMX/.test(s)).length;
+  count += x.filter(s => /XMAS|SAMX/.test(s)).length;
 }
 
 
