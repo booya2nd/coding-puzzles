@@ -1,80 +1,65 @@
-use std::str::FromStr;
-
+use anyhow::Result;
 use itertools::iproduct;
+use ndarray::Array2;
 
-#[derive(Debug)]
-struct Matrix<T> {
-    inner: Vec<T>,
-    width: usize,
-    height: usize,
+trait Relative<T> {
+    fn get_relative(&self, x: usize, y: usize, dx: isize, dy: isize) -> Option<&T>;
 }
 
-impl<T> Matrix<T> {
-    fn get(&self, x: isize, y: isize) -> Option<&T> {
-        if x < 0 || y < 0 || x >= self.width as isize || y >= self.height as isize {
-            return None;
-        }
-
-        self.inner.get(y as usize * self.width + x as usize)
-    }
-
-    fn iter_xy(&self) -> impl Iterator<Item = (isize, isize)> {
-        iproduct!(0..self.width, 0..self.height).map(|(x, y)| (x as isize, y as isize))
+impl Relative<char> for Array2<char> {
+    fn get_relative(&self, x: usize, y: usize, dx: isize, dy: isize) -> Option<&char> {
+        let (x, y) = (x as isize + dx, y as isize + dy);
+        (x >= 0 && y >= 0 && x < self.nrows() as isize && y < self.ncols() as isize)
+            .then(|| self.get((x as usize, y as usize)))?
     }
 }
 
-impl FromStr for Matrix<char> {
-    type Err = anyhow::Error;
+fn parse(input: &str) -> Result<Array2<char>> {
+    let cols = input.find('\n').unwrap_or_default();
+    let inner = input.chars().filter(|c| *c != '\n').collect::<Vec<_>>();
 
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
-        let width = s.find('\n').unwrap_or_default();
-        let inner = s.chars().filter(|c| *c != '\n').collect::<Vec<_>>();
+    Ok(Array2::from_shape_vec((inner.len() / cols, cols), inner)?)
+}
 
-        Ok(Self {
-            width,
-            height: inner.len() / width,
-            inner,
+fn part2(arr: &Array2<char>) -> usize {
+    arr.indexed_iter()
+        .filter(|&(_, &c)| c == 'A')
+        .filter(|&((x, y), _)| {
+            [(-1, -1, 1, 1), (1, -1, -1, 1)]
+                .iter()
+                .all(|&(dx1, dy1, dx2, dy2)| {
+                    matches!(
+                        (
+                            arr.get_relative(x, y, dx1, dy1),
+                            arr.get_relative(x, y, dx2, dy2)
+                        ),
+                        (Some('M'), Some('S')) | (Some('S'), Some('M'))
+                    )
+                })
         })
-    }
+        .count()
 }
 
-fn part1(matrix: &Matrix<char>) -> usize {
-    matrix
-        .iter_xy()
-        .map(|(x, y)| {
+fn part1(arr: &Array2<char>) -> usize {
+    arr.indexed_iter()
+        .filter(|&(_, &c)| c == 'X')
+        .map(|((x, y), _)| {
             iproduct!(-1..=1, -1..=1)
-                .filter(|(dx, dy)| {
-                    (0..4)
-                        .filter_map(|i| matrix.get(x + dx * i, y + dy * i))
-                        .eq([&'X', &'M', &'A', &'S'])
+                .filter(|&(dx, dy)| {
+                    (1..4)
+                        .filter_map(|i| arr.get_relative(x, y, dx * i, dy * i))
+                        .eq(['M', 'A', 'S'].iter())
                 })
                 .count()
         })
         .sum()
 }
 
-fn part2(matrix: &Matrix<char>) -> usize {
-    matrix
-        .iter_xy()
-        .filter(|&(x, y)| {
-            matches!(matrix.get(x, y), Some(&'A'))
-                && [(x - 1, y - 1, x + 1, y + 1), (x + 1, y - 1, x - 1, y + 1)]
-                    .iter()
-                    .all(|&(x1, y1, x2, y2)| {
-                        matches!(
-                            (matrix.get(x1, y1), matrix.get(x2, y2)),
-                            (Some('M'), Some('S')) | (Some('S'), Some('M'))
-                        )
-                    })
-        })
-        .count()
-}
+fn main() -> Result<()> {
+    let data = parse(&std::fs::read_to_string("input.txt")?)?;
 
-fn main() -> anyhow::Result<()> {
-    let matrix = std::fs::read_to_string("input.txt")?.parse::<Matrix<char>>()?;
-
-    println!("Part #1: {}", part1(&matrix));
-    println!("Part #2: {}", part2(&matrix));
+    println!("Part #1: {}", part1(&data));
+    println!("Part #2: {}", part2(&data));
 
     Ok(())
 }
@@ -91,8 +76,7 @@ mod tests {
 XMAS.S
 .X...."#;
 
-        let matrix = inp.parse::<Matrix<char>>().unwrap();
-        assert_eq!(super::part1(&matrix), 4);
+        assert_eq!(super::part1(&parse(inp).unwrap()), 4);
     }
 
     #[test]
@@ -107,8 +91,7 @@ SMSMSASXSS
 SAXAMASAAA
 MAMMMXMMMM
 MXMXAXMASX"#;
-        let matrix = inp.parse::<Matrix<char>>().unwrap();
-        assert_eq!(super::part1(&matrix), 18);
+        assert_eq!(super::part1(&parse(inp).unwrap()), 18);
     }
 
     #[test]
@@ -117,8 +100,7 @@ MXMXAXMASX"#;
 .A.
 M.S"#;
 
-        let matrix = inp.parse::<Matrix<char>>().unwrap();
-        assert_eq!(super::part2(&matrix), 1);
+        assert_eq!(super::part2(&parse(inp).unwrap()), 1);
     }
 
     #[test]
@@ -133,7 +115,7 @@ S.S.S.S.S.
 .A.A.A.A..
 M.M.M.M.M.
 .........."#;
-        let matrix = inp.parse::<Matrix<char>>().unwrap();
-        assert_eq!(super::part2(&matrix), 9);
+
+        assert_eq!(super::part2(&parse(inp).unwrap()), 9);
     }
 }
