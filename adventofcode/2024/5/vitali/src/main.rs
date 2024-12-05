@@ -1,4 +1,4 @@
-use std::collections::HashSet;
+use std::collections::{HashMap, HashSet};
 use anyhow::Result;
 
 fn parse(input: &str) -> (Vec<(i32, i32)>, Vec<Vec<i32>>) {
@@ -14,18 +14,12 @@ fn parse(input: &str) -> (Vec<(i32, i32)>, Vec<Vec<i32>>) {
 }
 
 fn is_valid(nums: &[i32], rules: &HashSet<&(i32, i32)>) -> bool {
+    let indexes: HashMap<_, _> = nums.iter().enumerate().map(|(idx, v)| (v, idx)).collect();
 
-    for i in 0..nums.len()-1 {
-        for j in i+1..nums.len() {
-            if rules.contains(&(nums[j], nums[i])) {
-                return false;
-            }
-        }
-    }
-
-    true
+    rules.iter().all(|&(n1, n2)| {
+        indexes.get(&n1).zip(indexes.get(&n2)).map_or(true, |(&idx1, &idx2)| idx1 < idx2)
+    })
 }
-
 
 fn part1(data: &(Vec<(i32, i32)>, Vec<Vec<i32>>)) -> i32 {
     let (rules, nums) = data;
