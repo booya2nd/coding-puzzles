@@ -25,15 +25,10 @@ fn part1(data: &(Vec<(i32, i32)>, Vec<Vec<i32>>)) -> i32 {
     let (rules, nums) = data;
     let rules: HashSet<&(i32, i32)> = HashSet::from_iter(rules.iter());
 
-    let mut sum = 0;
-    for n in nums {
-        if is_valid(n, &rules) {
-            sum += n[n.len() / 2];
-        }
-
-    }
-
-    sum
+    nums.iter()
+        .filter(|n| is_valid(n, &rules))
+        .map(|n| n[n.len() / 2])
+        .sum()
 }
 
 fn fix(nums: &[i32], rules: &HashSet<&(i32, i32)>) -> Vec<i32> {
