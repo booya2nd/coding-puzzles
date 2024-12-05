@@ -1,5 +1,10 @@
 use std::collections::{HashMap, HashSet};
 use anyhow::Result;
+use itertools::Itertools;
+use petgraph::algo::toposort;
+use petgraph::dot::{Config, Dot};
+use petgraph::Graph;
+use petgraph::graph::DiGraph;
 
 fn parse(input: &str) -> (Vec<(i32, i32)>, Vec<Vec<i32>>) {
     let (first, second) = input.split_once("\n\n").unwrap();
@@ -13,7 +18,7 @@ fn parse(input: &str) -> (Vec<(i32, i32)>, Vec<Vec<i32>>) {
     (rules, second)
 }
 
-fn is_valid(nums: &[i32], rules: &HashSet<&(i32, i32)>) -> bool {
+fn is_valid(nums: &[i32], rules: &[(i32, i32)]) -> bool {
     let indexes: HashMap<_, _> = nums.iter().enumerate().map(|(idx, v)| (v, idx)).collect();
 
     rules.iter().all(|&(n1, n2)| {
@@ -23,48 +28,53 @@ fn is_valid(nums: &[i32], rules: &HashSet<&(i32, i32)>) -> bool {
 
 fn part1(data: &(Vec<(i32, i32)>, Vec<Vec<i32>>)) -> i32 {
     let (rules, nums) = data;
-    let rules: HashSet<&(i32, i32)> = HashSet::from_iter(rules.iter());
 
     nums.iter()
-        .filter(|n| is_valid(n, &rules))
-        .map(|n| n[n.len() / 2])
+        .filter_map(|n| is_valid(n, rules).then(|| n[n.len() / 2]))
         .sum()
 }
 
-fn fix(nums: &[i32], rules: &HashSet<&(i32, i32)>) -> Vec<i32> {
-    let mut fixed = nums.to_vec();
+fn fixed(nums: &[i32], rules: &[(i32, i32)]) -> Vec<i32> {
+    let set = HashSet::<_>::from_iter(nums.iter());
 
+    let mut graph = DiGraph::new();
+    let mut nodes = HashMap::new();
 
-    for i in 0..nums.len()-1 {
-        for j in i+1..nums.len() {
-            if rules.contains(&(nums[j], nums[i])) {
-                fixed.swap(i, j);
-            }
+    for (a, b) in rules {
+        if !set.contains(a) || !set.contains(b) {
+            continue;
         }
+
+        let node_a = if let Some(node) = nodes.get(a) {
+            *node
+        } else {
+            let node = graph.add_node(*a);
+            nodes.insert(*a, node);
+            node
+        };
+
+        let node_b = if let Some(node) = nodes.get(b) {
+            *node
+        } else {
+            let node = graph.add_node(*b);
+            nodes.insert(*b, node);
+            node
+        };
+
+        graph.add_edge(node_a, node_b, ());
     }
 
-    fixed
+    toposort(&graph, None).unwrap().iter().map(|n| *graph.node_weight(*n).unwrap()).collect::<Vec<_>>()
 }
 
 
 fn part2(data: &(Vec<(i32, i32)>, Vec<Vec<i32>>)) -> i32 {
     let (rules, nums) = data;
-    let rules: HashSet<&(i32, i32)> = HashSet::from_iter(rules.iter());
 
-    let mut sum = 0;
-    for n in nums {
-        if !is_valid(n, &rules) {
-            let mut n = n.clone();
-            while !is_valid(&n, &rules) {
-                n = fix(&n, &rules);
-            }
-
-            sum += n[n.len() / 2];
-        }
-
-    }
-
-    sum
+    nums.iter()
+        .filter(|n| !is_valid(n, rules))
+        .map(|n| fixed(n, rules)[n.len() / 2])
+        .sum()
 }
 
 fn main() -> Result<()> {
