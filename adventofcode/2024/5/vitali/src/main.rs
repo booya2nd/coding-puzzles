@@ -1,19 +1,22 @@
-use std::collections::{HashMap, HashSet};
 use anyhow::Result;
-use itertools::Itertools;
 use petgraph::algo::toposort;
-use petgraph::dot::{Config, Dot};
-use petgraph::Graph;
 use petgraph::graph::DiGraph;
+use std::collections::{HashMap, HashSet};
 
 fn parse(input: &str) -> (Vec<(i32, i32)>, Vec<Vec<i32>>) {
     let (first, second) = input.split_once("\n\n").unwrap();
-    let rules = first.lines().map(|line| {
-        let (n1, n2) = line.split_once("|").unwrap();
-        (n1.parse().unwrap(), n2.parse().unwrap())
-    }).collect::<Vec<_>>();
+    let rules = first
+        .lines()
+        .map(|line| {
+            let (n1, n2) = line.split_once("|").unwrap();
+            (n1.parse().unwrap(), n2.parse().unwrap())
+        })
+        .collect::<Vec<_>>();
 
-    let second = second.lines().map(|l| l.split(',').map(|n| n.parse().unwrap()).collect()).collect();
+    let second = second
+        .lines()
+        .map(|l| l.split(',').map(|n| n.parse().unwrap()).collect())
+        .collect();
 
     (rules, second)
 }
@@ -22,7 +25,10 @@ fn is_valid(nums: &[i32], rules: &[(i32, i32)]) -> bool {
     let indexes: HashMap<_, _> = nums.iter().enumerate().map(|(idx, v)| (v, idx)).collect();
 
     rules.iter().all(|&(n1, n2)| {
-        indexes.get(&n1).zip(indexes.get(&n2)).map_or(true, |(&idx1, &idx2)| idx1 < idx2)
+        indexes
+            .get(&n1)
+            .zip(indexes.get(&n2))
+            .map_or(true, |(&idx1, &idx2)| idx1 < idx2)
     })
 }
 
@@ -30,7 +36,8 @@ fn part1(data: &(Vec<(i32, i32)>, Vec<Vec<i32>>)) -> i32 {
     let (rules, nums) = data;
 
     nums.iter()
-        .filter_map(|n| is_valid(n, rules).then(|| n[n.len() / 2]))
+        .filter(|&n| is_valid(n, rules))
+        .map(|n| n[n.len() / 2])
         .sum()
 }
 
@@ -64,9 +71,12 @@ fn fixed(nums: &[i32], rules: &[(i32, i32)]) -> Vec<i32> {
         graph.add_edge(node_a, node_b, ());
     }
 
-    toposort(&graph, None).unwrap().iter().map(|n| *graph.node_weight(*n).unwrap()).collect::<Vec<_>>()
+    toposort(&graph, None)
+        .unwrap()
+        .iter()
+        .map(|n| *graph.node_weight(*n).unwrap())
+        .collect::<Vec<_>>()
 }
-
 
 fn part2(data: &(Vec<(i32, i32)>, Vec<Vec<i32>>)) -> i32 {
     let (rules, nums) = data;
@@ -118,7 +128,6 @@ mod tests {
 75,97,47,61,53
 61,13,29
 97,13,75,29,47"#;
-
 
     #[test]
     fn test_part1() {
