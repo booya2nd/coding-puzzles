@@ -41,35 +41,19 @@ fn part1(data: &(Vec<(i32, i32)>, Vec<Vec<i32>>)) -> i32 {
         .sum()
 }
 
-fn fixed(nums: &[i32], rules: &[(i32, i32)]) -> Vec<i32> {
-    let set = HashSet::<_>::from_iter(nums.iter());
-
-    let mut graph = DiGraph::new();
+fn fix(nums: &[i32], rules: &[(i32, i32)]) -> Vec<i32> {
+    let set: HashSet<_> = nums.iter().cloned().collect();
     let mut nodes = HashMap::new();
 
-    for (a, b) in rules {
-        if !set.contains(a) || !set.contains(b) {
-            continue;
-        }
-
-        let node_a = if let Some(node) = nodes.get(a) {
-            *node
-        } else {
-            let node = graph.add_node(*a);
-            nodes.insert(*a, node);
-            node
-        };
-
-        let node_b = if let Some(node) = nodes.get(b) {
-            *node
-        } else {
-            let node = graph.add_node(*b);
-            nodes.insert(*b, node);
-            node
-        };
-
-        graph.add_edge(node_a, node_b, ());
-    }
+    let graph = rules
+        .iter()
+        .filter(|(a, b)| set.contains(a) && set.contains(b))
+        .fold(DiGraph::new(), |mut graph, &(a, b)| {
+            let node_a = *nodes.entry(a).or_insert_with(|| graph.add_node(a));
+            let node_b = *nodes.entry(b).or_insert_with(|| graph.add_node(b));
+            graph.add_edge(node_a, node_b, ());
+            graph
+        });
 
     toposort(&graph, None)
         .unwrap()
@@ -83,7 +67,7 @@ fn part2(data: &(Vec<(i32, i32)>, Vec<Vec<i32>>)) -> i32 {
 
     nums.iter()
         .filter(|n| !is_valid(n, rules))
-        .map(|n| fixed(n, rules)[n.len() / 2])
+        .map(|n| fix(n, rules)[n.len() / 2])
         .sum()
 }
 
