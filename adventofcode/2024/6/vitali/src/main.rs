@@ -1,5 +1,6 @@
 use anyhow::Result;
 use grid::Grid;
+use rayon::iter::{ParallelBridge, ParallelIterator};
 use std::collections::HashSet;
 
 fn main() -> Result<()> {
@@ -22,26 +23,21 @@ fn part1(input: &str) -> usize {
 }
 
 fn part2(input: &str) -> usize {
-    let mut grid = parse(input);
+    let grid = parse(input);
     let start = grid
         .indexed_iter()
         .find_map(|(pos, &c)| (c == '^').then_some(pos))
         .unwrap();
-
-    let visited = get_visited(&grid, start);
-
-    visited
-        .into_iter()
-        .filter(|pos| {
-            if *pos == start {
+    
+    get_visited(&grid, start)
+        .iter()
+        .par_bridge()
+        .filter(|obstacle| {
+            if **obstacle == start {
                 return false;
             }
 
-            *grid.get_mut(pos.0, pos.1).unwrap() = '#';
-            let result = has_loop(&grid, start);
-            *grid.get_mut(pos.0, pos.1).unwrap() = '.';
-
-            result
+            has_loop(&grid, start, **obstacle)
         })
         .count()
 }
@@ -76,28 +72,30 @@ fn get_visited(grid: &Grid<char>, (y, x): (usize, usize)) -> HashSet<(usize, usi
     visited
 }
 
-fn has_loop(grid: &Grid<char>, (y, x): (usize, usize)) -> bool {
+fn has_loop(grid: &Grid<char>, (y, x): (usize, usize), (oy, ox): (usize, usize)) -> bool {
     let mut visited = HashSet::new();
     let (mut dx, mut dy) = (0, -1);
     let (mut y, mut x) = (y as isize, x as isize);
-    let mut cnt = 1;
+    let mut cnt = 0;
 
     loop {
-        if !visited.insert((y, x)) {
-            cnt += 1;
-            if cnt > visited.len() * 2 {
-                return true;
-            }
-        }
-
         let (nx, ny) = (x + dx, y + dy);
 
         match grid.get(ny, nx) {
             Some('#') => {
                 (dx, dy) = (-dy, dx);
             }
+            Some('.') if (oy as isize, ox as isize) == (ny, nx) => {
+                (dx, dy) = (-dy, dx);
+            }
             None => break,
             _ => {
+                cnt += 1;
+
+                if !visited.insert((y, x)) && cnt >= visited.len() * 2 {
+                    return true;
+                }
+
                 (x, y) = (nx, ny);
             }
         }
