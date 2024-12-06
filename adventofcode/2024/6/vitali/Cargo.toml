@@ -5,7 +5,4 @@ edition = "2021"
 
 [dependencies]
 anyhow = "1.0.94"
-itertools = "0.13.0"
-indexmap = "2.7"
-pathfinding = "4.11.0"
 grid = "0.15.0"
