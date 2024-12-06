@@ -1,3 +1,4 @@
+use std::cmp::Ordering;
 use anyhow::Result;
 use petgraph::algo::toposort;
 use petgraph::graph::DiGraph;
@@ -42,24 +43,16 @@ fn part1(data: &(Vec<(i32, i32)>, Vec<Vec<i32>>)) -> i32 {
 }
 
 fn fix(nums: &[i32], rules: &[(i32, i32)]) -> Vec<i32> {
-    let set: HashSet<_> = nums.iter().cloned().collect();
-    let mut nodes = HashMap::new();
+    // let set: HashSet<_> = nums.iter().cloned().collect();
+    // let mut nodes = HashMap::new();
 
-    let graph = rules
-        .iter()
-        .filter(|(a, b)| set.contains(a) && set.contains(b))
-        .fold(DiGraph::new(), |mut graph, &(a, b)| {
-            let node_a = *nodes.entry(a).or_insert_with(|| graph.add_node(a));
-            let node_b = *nodes.entry(b).or_insert_with(|| graph.add_node(b));
-            graph.add_edge(node_a, node_b, ());
-            graph
-        });
+    let sorting = rules.iter().map(|(a, b)| ((a, b), Ordering::Less)).collect::<HashMap<_, _>>();
 
-    toposort(&graph, None)
-        .unwrap()
-        .iter()
-        .map(|n| *graph.node_weight(*n).unwrap())
-        .collect::<Vec<_>>()
+
+    let mut nums = nums.to_vec();
+    nums.sort_by(|a, b| *sorting.get(&(a, b)).unwrap_or(&Ordering::Equal));
+
+    nums
 }
 
 fn part2(data: &(Vec<(i32, i32)>, Vec<Vec<i32>>)) -> i32 {
