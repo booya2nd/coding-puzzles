@@ -28,7 +28,7 @@ fn part2(input: &str) -> usize {
         .indexed_iter()
         .find_map(|(pos, &c)| (c == '^').then_some(pos))
         .unwrap();
-    
+
     get_visited(&grid, start)
         .iter()
         .par_bridge()
