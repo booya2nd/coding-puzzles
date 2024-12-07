@@ -1,3 +1,5 @@
+use rayon::prelude::*;
+
 fn main() -> anyhow::Result<()> {
     let data = std::fs::read_to_string("input.txt")?;
 
@@ -10,6 +12,7 @@ fn main() -> anyhow::Result<()> {
 fn part(input: &str, enable_concat: bool) -> i64 {
     input
         .lines()
+        .par_bridge()
         .filter_map(|line| {
             let (result, nums) = line.split_once(": ").unwrap();
             let result = result.parse::<i64>().unwrap();
