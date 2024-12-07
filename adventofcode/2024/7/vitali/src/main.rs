@@ -10,7 +10,7 @@ fn main() -> anyhow::Result<()> {
 fn part(input: &str, enable_concat: bool) -> i64 {
     input
         .lines()
-        .map(|line| {
+        .filter_map(|line| {
             let (result, nums) = line.split_once(": ").unwrap();
             let result = result.parse::<i64>().unwrap();
             let nums = nums
@@ -18,12 +18,10 @@ fn part(input: &str, enable_concat: bool) -> i64 {
                 .map(|num| num.parse().unwrap())
                 .collect::<Vec<_>>();
 
-            (result, nums)
+            solve(result, nums[0], &nums[1..], enable_concat).then_some(result)
         })
-        .filter_map(|(result, nums)| solve(result, nums[0], &nums[1..], enable_concat).then_some(result))
         .sum()
 }
-
 
 fn solve(result: i64, current: i64, nums: &[i64], enable_concat: bool) -> bool {
     if nums.is_empty() {
@@ -40,7 +38,6 @@ fn solve(result: i64, current: i64, nums: &[i64], enable_concat: bool) -> bool {
                 enable_concat,
             ))
 }
-
 
 #[cfg(test)]
 mod tests {
