@@ -24,6 +24,11 @@ fn part(input: &str, enable_concat: bool) -> i64 {
 }
 
 fn solve(result: i64, current: i64, nums: &[i64], enable_concat: bool) -> bool {
+
+    if current > result {
+        return false;
+    }
+
     if nums.is_empty() {
         return result == current;
     }
