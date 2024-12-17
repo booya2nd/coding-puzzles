@@ -9,12 +9,12 @@ let M = [
 
 while (heap.length) {
   heap.sort((a,b)=>a[0]-b[0]);
-  let [cost, i, _dir] = heap.shift();
+  let [cost, i, dir] = heap.shift();
   if (text[i] === 'E') { console.log(cost); break; }
-  if (dist[[i,_dir]] < cost) continue;
+  if (dist[[i,dir]] < cost) continue;
 
   for (let { offs, d, c } of M) {
-    let o=offs(_dir), nd = (_dir + d) % 4;
+    let o=offs(dir), nd = (dir + d) % 4;
     let ni = i + o[0] + o[1];
     if (text[ni] === '#' && (o[0] || o[1])) continue;
     let newCost = cost + c;
