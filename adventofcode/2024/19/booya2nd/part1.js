@@ -22,4 +22,16 @@ const valid = w => {
   return 0;
 }
 
+x=100;z=[];while(x-->0) {
+  const t0=performance.now();
+  wish.filter(valid).length
+  z.push(performance.now()-t0);
+}
+z=z.sort((a,b)=>a-b).slice(1,-1);
+console.log({
+  runs: z.length+2,
+  avg: z.reduce((a, b) => a + b) / z.length,
+  min: z.at(0),
+  max: z.at(-1)
+});
 console.log(wish.filter(valid).length);
