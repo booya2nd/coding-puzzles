@@ -1,7 +1,7 @@
-Advent of Code[About][Events][Shop][Settings][Log Out]Marcel Lucas 9*
-   0xffff&2025[Calendar][AoC++][Sponsors][Leaderboards][Stats]
+Advent of Code[About][Events][Shop][Settings][Log Out]Marcel Lucas 10*
+  0.0.0.0:2025[Calendar][AoC++][Sponsors][Leaderboards][Stats]
 Our sponsors help make Advent of Code possible:
-Jump Trading - We're traders, builders, engineers, and researchers obsessed with improving the models, tools, and systems that power everything we do. From raw silicon through order execution, we tackle problems few ever get to see.
+CodeRabbit - Cut Code Review Time and Bugs in Half
 --- Day 6: Trash Compactor ---
 After helping the Elves in the kitchen, you were taking a break and helping them re-enact a movie scene when you over-enthusiastically jumped into the garbage chute!
 
@@ -13,10 +13,10 @@ Cephalopod math doesn't look that different from normal math. The math worksheet
 
 However, the problems are arranged a little strangely; they seem to be presented next to each other in a very long horizontal list. For example:
 
-123 328  51 64
- 45 64  387 23
+123 328  51 64 
+ 45 64  387 23 
   6 98  215 314
-*   +   *   +
+*   +   *   +  
 Each problem's numbers are arranged vertically; at the bottom of the problem is the symbol for the operation that needs to be performed. Problems are separated by a full column of only spaces. The left/right alignment of numbers within each problem can be ignored.
 
 So, this worksheet contains four problems:
@@ -31,9 +31,34 @@ Of course, the actual worksheet is much wider. You'll need to make sure to unrol
 
 Solve the problems on the math worksheet. What is the grand total found by adding together all of the answers to the individual problems?
 
-To begin, get your puzzle input.
+Your puzzle answer was 4405895212738.
 
-Answer:
+The first half of this puzzle is complete! It provides one gold star: *
 
+--- Part Two ---
+The big cephalopods come back to check on how things are going. When they see that your grand total doesn't match the one expected by the worksheet, they realize they forgot to explain how to read cephalopod math.
+
+Cephalopod math is written right-to-left in columns. Each number is given in its own column, with the most significant digit at the top and the least significant digit at the bottom. (Problems are still separated with a column consisting only of spaces, and the symbol at the bottom of the problem is still the operator to use.)
+
+Here's the example worksheet again:
+
+123 328  51 64 
+ 45 64  387 23 
+  6 98  215 314
+*   +   *   +  
+Reading the problems right-to-left one column at a time, the problems are now quite different:
+
+The rightmost problem is 4 + 431 + 623 = 1058
+The second problem from the right is 175 * 581 * 32 = 3253600
+The third problem from the right is 8 + 248 + 369 = 625
+Finally, the leftmost problem is 356 * 24 * 1 = 8544
+Now, the grand total is 1058 + 3253600 + 625 + 8544 = 3263827.
+
+Solve the problems on the math worksheet again. What is the grand total found by adding together all of the answers to the individual problems?
+
+Answer: 
+ 
+
+Although it hasn't changed, you can still get your puzzle input.
 
 You can also [Share] this puzzle.
